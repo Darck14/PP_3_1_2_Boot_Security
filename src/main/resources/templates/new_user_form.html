@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New user</title>
+</head>
+<body>
+
+<h1>User Form</h1>
+<form th:action="@{/admin}" th:object="${user}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+
+    <div>
+        <label>Name:</label>
+        <input type="text" th:field="*{name}" required="required"/>
+    </div>
+    <div>
+        <label>Surname:</label>
+        <input type="text" th:field="*{sername}" required="required"/>
+    </div>
+    <div>
+        <label>Sex:</label>
+        <input type="text" th:field="*{sex}" required="required"/>
+    </div>
+    <div>
+        <label>Password:</label>
+        <input type="password" th:field="*{password}" required="required"/>
+    </div>
+    <div>
+        <label>Roles:</label>
+        <input type="text" name="roleNames" required="required"/>
+    </div>
+    <div>
+        <button type="submit">Add user</button>
+    </div>
+</form>
+<a href="/admin">Come back</a>
+
+</body>
+</html>

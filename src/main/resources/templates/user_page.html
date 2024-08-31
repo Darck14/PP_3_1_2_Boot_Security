@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User page</title>
+</head>
+<body>
+
+<h1>User Details</h1>
+
+<p>ID: <span th:text="${user.getId()}"></span></p>
+<p>Name: <span th:text="${user.getName()}"></span></p>
+<p>Sername: <span th:text="${user.getSername()}"></span></p>
+<p>Sex: <span th:text="${user.getSex()}"></span></p>
+<p>Roles: </p>
+<ul>
+    <li th:each="role : ${user.roles}" th:text="${role.name}"></li>
+</ul>
+
+<a th:href="@{/logout}">Logout</a>
+
+</body>
+</html>

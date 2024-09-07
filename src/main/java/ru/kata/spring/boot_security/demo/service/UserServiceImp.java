@@ -18,16 +18,12 @@ import java.util.List;
 public class UserServiceImp  implements UserService {
 
     private final UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImp(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    public UserServiceImp(UserRepository userRepository) {
-        this.userRepository = userRepository;
     }
 
     @Transactional

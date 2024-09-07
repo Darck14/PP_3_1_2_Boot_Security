@@ -1,10 +1,11 @@
-package ru.kata.spring.boot_security.demo.Controllers;
+package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
@@ -15,10 +16,12 @@ import java.util.List;
 public class AdminController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping
@@ -41,7 +44,8 @@ public class AdminController {
 
     @PostMapping
     public String addUser(@ModelAttribute("user") User user, @RequestParam List<String> roleNames) {
-        userService.add(user, roleNames);
+        user.setRoles(roleService.iterateRolesByUser(roleNames));
+        userService.add(user);
         return "redirect:/admin";
     }
 
@@ -59,7 +63,8 @@ public class AdminController {
 
     @PostMapping("/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute ("user") User user, @RequestParam List<String> roleNames) {
-        userService.update(user, roleNames);
+        user.setRoles(roleService.iterateRolesByUser(roleNames));
+        userService.update(user);
         return "redirect:/admin";
     }
 }

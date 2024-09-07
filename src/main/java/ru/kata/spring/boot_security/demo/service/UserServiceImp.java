@@ -6,41 +6,27 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Service
 public class UserServiceImp  implements UserService{
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImp(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImp(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     @Override
-    public void add(User user, List<String> roleNames) {
-        Set<Role> roles = new HashSet<>();
-        for(String roleName : roleNames) {
-            Role role = roleRepository.findByName(roleName)
-                    .orElseGet(() -> {Role newRole = new Role();
-                    newRole.setName(roleName);
-                    return roleRepository.save(newRole);});
-            roles.add(role);
-        }
-        user.setRoles(roles);
+    public void add(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -57,18 +43,13 @@ public class UserServiceImp  implements UserService{
 
     @Transactional
     @Override
-    public void update(User user, List<String> roleNames) {
-        Set<Role> roles = new HashSet<>();
-        for(String roleName : roleNames) {
-            Role role = roleRepository.findByName(roleName)
-                    .orElseGet(() -> {Role newRole = new Role();
-                        newRole.setName(roleName);
-                        return roleRepository.save(newRole);});
-            roles.add(role);
+    public void update(User user) {
+        if (passwordEncoder.matches(user.getPassword(), userRepository.findById(user.getId()).get().getPassword())) {
+            userRepository.save(user);
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
         }
-        user.setRoles(roles);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
     }
 
     @Transactional

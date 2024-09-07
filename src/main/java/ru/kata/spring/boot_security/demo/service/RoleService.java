@@ -12,5 +12,5 @@ public interface RoleService {
     Role findById(long id);
     void update(Role role);
     void deleteById(long id);
-    Set<Role> iterateRolesByUser(List<String> roleNames);
+    Set<Role> iterateRoles(List<String> roleNames);
 }

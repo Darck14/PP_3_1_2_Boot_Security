@@ -44,7 +44,7 @@ public class AdminController {
 
     @PostMapping
     public String addUser(@ModelAttribute("user") User user, @RequestParam List<String> roleNames) {
-        user.setRoles(roleService.iterateRolesByUser(roleNames));
+        user.setRoles(roleService.iterateRoles(roleNames));
         userService.add(user);
         return "redirect:/admin";
     }
@@ -63,7 +63,7 @@ public class AdminController {
 
     @PostMapping("/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute ("user") User user, @RequestParam List<String> roleNames) {
-        user.setRoles(roleService.iterateRolesByUser(roleNames));
+        user.setRoles(roleService.iterateRoles(roleNames));
         userService.update(user);
         return "redirect:/admin";
     }

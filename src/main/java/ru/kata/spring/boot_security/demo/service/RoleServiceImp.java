@@ -49,7 +49,7 @@ public class RoleServiceImp implements RoleService {
     }
     @Transactional
     @Override
-    public Set<Role> iterateRolesByUser(List<String> roleNames) {
+    public Set<Role> iterateRoles(List<String> roleNames) {
         Set<Role> roles = new HashSet<>();
         for (String roleName : roleNames) {
             Role role = roleRepository.findByName(roleName)
